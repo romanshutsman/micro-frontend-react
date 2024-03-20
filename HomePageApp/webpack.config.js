@@ -2,6 +2,8 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const path = require("path");
 
+const {ModuleFederationPlugin} = require("webpack").container;
+
 module.exports = {
   mode: "development",
   entry: path.resolve(__dirname, "src", "index.js"),
@@ -17,6 +19,14 @@ module.exports = {
     port: 3000,
   },
   plugins: [
+
+  new ModuleFederationPlugin({
+    name: 'home',
+    filename: 'remoteEntry.js',
+    remotes: {
+      components: "components@http://localhost:3002/remoteEntry.js",
+    }
+  }),
     new MiniCssExtractPlugin(),
     new HtmlWebpackPlugin({
       template: "./src/index.html",
