@@ -12,6 +12,7 @@ const HomeContent = (props) => {
     const response = await fetch('http://localhost:5555/movies');
     const result = await response.json();
     console.log(result)
+  setMovies(result);
   }, []);
 
   const movieClicked = (item) => {
@@ -24,10 +25,7 @@ const HomeContent = (props) => {
     let items = movies.map((item) => {
       return (
         <div onClick={() => movieClicked(item)} key={item.name}>
-          <div>Load the cards Here</div>
-          <Suspense fallback={null}>
-            <MovieCard></MovieCard>
-          </Suspense>
+            <MovieCard title={item.name} imageUrl={item.imageUrl}></MovieCard>
         </div>
       );
     });
@@ -39,7 +37,7 @@ const HomeContent = (props) => {
     <div className="home-content-container">
       <QuickBooking></QuickBooking>
       <div className="movies-container">
-        {renderMovieList()}
+          <Suspense fallback={null}>{renderMovieList()}</Suspense>
       </div>
     </div>
   );
