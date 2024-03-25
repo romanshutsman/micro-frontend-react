@@ -3,7 +3,6 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const path = require("path");
 const {ModuleFederationPlugin} = require("webpack").container;
 
-
 module.exports = {
   mode: "development",
   entry: path.resolve(__dirname, "src", "index.js"),
@@ -16,24 +15,9 @@ module.exports = {
       directory: path.resolve(__dirname, "dist"),
     },
     open: true,
-    port: 3001,
+    port: 9000,
     historyApiFallback: true,
   },
-  plugins: [
-    new ModuleFederationPlugin({
-      name: 'details',
-      filename: 'remoteEntry.js',
-      exposes: {
-        "./DetailsContent": "./src/components/DetailsContent/DetailsContent.jsx"
-      },
-      shared: ['react', 'react-dom']
-    }),
-    new MiniCssExtractPlugin(),
-    new HtmlWebpackPlugin({
-      template: "./src/index.html",
-      filename: "index.html",
-    }),    
-  ],
   module: {
     rules: [
       {
@@ -70,11 +54,37 @@ module.exports = {
           "sass-loader",
         ],
       },
+      {
+        test: /\.(png|jpeg|gif|jpg)$/i,
+        type: "asset/resource",
+      },
+      {
+        test: /\.webp$/i,
+        use: ["file-loader","webp-loader"],
+      },
     ],
   },
+  plugins: [
+
+    new ModuleFederationPlugin({
+      name: 'app',
+      filename: 'remoteEntry.js',
+      remotes: {
+        home: "home@http://localhost:3000/remoteEntry.js",
+        details: "details@http://localhost:3001/remoteEntry.js",
+        seat: "seat@http://localhost:3003/remoteEntry.js",
+      },
+      shared: ['react', 'react-dom']
+    }),
+    new MiniCssExtractPlugin(),
+    new HtmlWebpackPlugin({
+      template: "./src/index.html",
+      filename: "index.html",
+    }),
+  ],
   optimization: {
     splitChunks: {
-      chunks: "async",
+      chunks: "all",
     },
   },
 };
