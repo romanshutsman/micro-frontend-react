@@ -74,6 +74,9 @@ module.exports = {
         details: "details@http://localhost:3001/remoteEntry.js",
         seat: "seat@http://localhost:3003/remoteEntry.js",
       },
+      exposes: {
+        './MovieData': "./src/moveObser.js"
+      },
       shared: ['react', 'react-dom']
     }),
     new MiniCssExtractPlugin(),

@@ -24,7 +24,10 @@ module.exports = {
       name: 'details',
       filename: 'remoteEntry.js',
       exposes: {
-        "./DetailsContent": "./src/components/DetailsContent/DetailsContent.jsx"
+        "./DetailsContent": "./src/components/DetailsContent/DetailsContent.jsx",
+      },
+      remotes: {
+        mainapp: "app@http://localhost:9000/remoteEntry.js"
       },
       shared: ['react', 'react-dom']
     }),

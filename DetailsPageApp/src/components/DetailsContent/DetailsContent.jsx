@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./DetailsContent.scss";
 
 const DetailsContent = (props) => {
+  console.log(props);
   const [movie, setMovie] = useState([]);
   const [date, setDate] = useState("01/02/2022");
   const [time, setTime] = useState("10 Am");
@@ -30,7 +31,14 @@ const DetailsContent = (props) => {
       movie: movie.id,
       date,
       time,
-    };   
+    };
+    import('mainapp/MovieData').then(module => {
+      const movieData = module.default;
+      movieData.next(booking);
+      console.log(props);
+      props.routing.history.push("/book")
+    })
+
   };
 
   return (

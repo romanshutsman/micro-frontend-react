@@ -10,6 +10,17 @@ const SeatSelectionContent = () => {
   });
   const [seatsCount, setSeatsCount] = useState(0);
 
+  useEffect(() => {
+    import('mainapp/MovieData').then(module => {
+      const movieData = module.default;
+      movieData.subscribe({
+        next: data => {
+          console.log(1,data)
+          loadBooking(data);
+        }
+      });
+    })
+  }, []);
   const loadBooking = async (booking) => {
     const resp = await fetch("http://localhost:5555/movies");
     const data = await resp.json();
